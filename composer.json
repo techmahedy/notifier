@@ -1,0 +1,48 @@
+{
+    "name": "doppar/notifier",
+    "description": "A lightweight notifier management library for the Doppar framework.",
+    "type": "library",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/doppar/notifier/issues",
+        "source": "https://github.com/doppar/notifier"
+    },
+    "authors": [
+        {
+            "name": "Mahedi Hasan",
+            "email": "mahedy150101@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^12.1.5",
+        "doppar/framework": "^3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Doppar\\Notifier\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Doppar\\Notifier\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        },
+        "doppar": {
+            "providers": [
+                "Doppar\\Notifier\\NotifierServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "doppar/queue": "^1.0@dev"
+    }
+}
