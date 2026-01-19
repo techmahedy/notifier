@@ -1,5 +1,13 @@
 # Release Notes
 
+## v1.0.2 - 2026-01-19
+
+### What's Changed
+
+* composer.json updated by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/6
+
+**Full Changelog**: https://github.com/doppar/notifier/compare/v1.0.1...v1.0.2
+
 ## v1.0.1 - 2025-12-15
 
 ### What's Changed
