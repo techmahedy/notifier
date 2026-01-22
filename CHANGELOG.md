@@ -1,5 +1,13 @@
 # Release Notes
 
+## v1.0.3 - 2026-01-22
+
+### What's Changed
+
+* always use queue latest version by [@techmahedy](https://github.com/techmahedy) in https://github.com/doppar/notifier/pull/7
+
+**Full Changelog**: https://github.com/doppar/notifier/compare/v1.0.2...v1.0.3
+
 ## v1.0.2 - 2026-01-19
 
 ### What's Changed
