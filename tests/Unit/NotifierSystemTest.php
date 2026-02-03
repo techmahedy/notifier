@@ -15,6 +15,8 @@ use Doppar\Notifier\Tests\Mock\Channels\TestCustomChannel;
 use Doppar\Notifier\Tests\Mock\Models\DatabaseNotification;
 use Doppar\Notifier\Tests\Mock\Models\MockNotifiable;
 use Doppar\Notifier\Tests\Mock\Notifications\TestEmailNotification;
+use Doppar\Notifier\Supports\Facades\Notification;
+use Doppar\Notifier\Concerns\NotificationBuilder;
 
 class NotifierSystemTest extends TestCase
 {
@@ -184,5 +186,36 @@ class NotifierSystemTest extends TestCase
         $this->assertEquals(MockNotifiable::class, $notification->notifiable_type);
         $this->assertEquals(1, $notification->notifiable_id);
         $this->assertNull($notification->read_at);
+    }
+
+    public function testMarkNotificationAsRead(): void
+    {
+        $notification = DatabaseNotification::create([
+            'notifiable_type' => MockNotifiable::class,
+            'notifiable_id' => 1,
+            'type' => TestEmailNotification::class,
+            'data' => json_encode(['message' => 'Test']),
+            'metadata' => json_encode([]),
+            'read_at' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $this->assertTrue($notification->isUnread());
+        $this->assertFalse($notification->isRead());
+
+        $result = $notification->markAsRead();
+
+        $this->assertTrue($result);
+        $this->assertNotNull($notification->read_at);
+        $this->assertTrue($notification->isRead());
+        $this->assertFalse($notification->isUnread());
+    }
+
+    public function testNotificationBuilderCreation(): void
+    {
+        $notifiable = new MockNotifiable(['id' => 1]);
+        $builder = Notification::to($notifiable);
+
+        $this->assertInstanceOf(NotificationBuilder::class, $builder);
     }
 }

@@ -35,4 +35,69 @@ class DatabaseNotification extends Model
      * @var bool
      */
     public $timeStamps = false;
+
+
+    /**
+     * Mark notification as read
+     *
+     * @return bool
+     */
+    public function markAsRead(): bool
+    {
+        if ($this->read_at) {
+            return true;
+        }
+
+        $this->read_at = date('Y-m-d H:i:s');
+
+        return $this->save();
+    }
+
+    /**
+     * Mark notification as unread
+     *
+     * @return bool
+     */
+    public function markAsUnread(): bool
+    {
+        if (!$this->read_at) {
+            return true;
+        }
+
+        $this->read_at = null;
+
+        return $this->save();
+    }
+
+    /**
+     * Check if notification is read
+     *
+     * @return bool
+     */
+    public function isRead(): bool
+    {
+        return $this->read_at !== null;
+    }
+
+    /**
+     * Check if notification is unread
+     *
+     * @return bool
+     */
+    public function isUnread(): bool
+    {
+        return $this->read_at === null;
+    }
+
+    /**
+     * Get the notifiable entity
+     *
+     * @return mixed
+     */
+    public function notifiable()
+    {
+        $class = $this->notifiable_type;
+
+        return $class::find($this->notifiable_id);
+    }
 }
