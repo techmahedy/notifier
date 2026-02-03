@@ -232,14 +232,6 @@ class NotifierSystemTest extends TestCase
         $this->assertTrue($notification->isUnread());
     }
 
-    public function testNotificationBuilderCreation(): void
-    {
-        $notifiable = new MockNotifiable(['id' => 1]);
-        $builder = Notification::to($notifiable);
-
-        $this->assertInstanceOf(NotificationBuilder::class, $builder);
-    }
-
     public function testMarkAlreadyReadNotificationAsRead(): void
     {
         $notification = DatabaseNotification::create([
@@ -254,5 +246,29 @@ class NotifierSystemTest extends TestCase
 
         $result = $notification->markAsRead();
         $this->assertTrue($result);
+    }
+
+    public function testMarkAlreadyUnreadNotificationAsUnread(): void
+    {
+        $notification = DatabaseNotification::create([
+            'notifiable_type' => MockNotifiable::class,
+            'notifiable_id' => 1,
+            'type' => TestEmailNotification::class,
+            'data' => json_encode(['message' => 'Test']),
+            'metadata' => json_encode([]),
+            'read_at' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $result = $notification->markAsUnread();
+        $this->assertTrue($result);
+    }
+
+    public function testNotificationBuilderCreation(): void
+    {
+        $notifiable = new MockNotifiable(['id' => 1]);
+        $builder = Notification::to($notifiable);
+
+        $this->assertInstanceOf(NotificationBuilder::class, $builder);
     }
 }
