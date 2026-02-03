@@ -239,4 +239,20 @@ class NotifierSystemTest extends TestCase
 
         $this->assertInstanceOf(NotificationBuilder::class, $builder);
     }
+
+    public function testMarkAlreadyReadNotificationAsRead(): void
+    {
+        $notification = DatabaseNotification::create([
+            'notifiable_type' => MockNotifiable::class,
+            'notifiable_id' => 1,
+            'type' => TestEmailNotification::class,
+            'data' => json_encode(['message' => 'Test']),
+            'metadata' => json_encode([]),
+            'read_at' => date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $result = $notification->markAsRead();
+        $this->assertTrue($result);
+    }
 }
