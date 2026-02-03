@@ -12,6 +12,9 @@ use PDO;
 use Doppar\Notifier\Tests\Mock\MockContainer;
 use Doppar\Notifier\NotificationManager;
 use Doppar\Notifier\Tests\Mock\Channels\TestCustomChannel;
+use Doppar\Notifier\Tests\Mock\Models\DatabaseNotification;
+use Doppar\Notifier\Tests\Mock\Models\MockNotifiable;
+use Doppar\Notifier\Tests\Mock\Notifications\TestEmailNotification;
 
 class NotifierSystemTest extends TestCase
 {
@@ -163,5 +166,23 @@ class NotifierSystemTest extends TestCase
 
         $channels = $this->manager->getChannels();
         $this->assertContains('custom', $channels);
+    }
+
+    public function testCreateDatabaseNotification(): void
+    {
+        $notification = DatabaseNotification::create([
+            'notifiable_type' => MockNotifiable::class,
+            'notifiable_id' => 1,
+            'type' => TestEmailNotification::class,
+            'data' => json_encode(['title' => 'Test', 'message' => 'Hello']),
+            'metadata' => json_encode(['priority' => 'high']),
+            'read_at' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $this->assertInstanceOf(DatabaseNotification::class, $notification);
+        $this->assertEquals(MockNotifiable::class, $notification->notifiable_type);
+        $this->assertEquals(1, $notification->notifiable_id);
+        $this->assertNull($notification->read_at);
     }
 }
