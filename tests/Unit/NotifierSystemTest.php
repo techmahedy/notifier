@@ -271,4 +271,17 @@ class NotifierSystemTest extends TestCase
 
         $this->assertInstanceOf(NotificationBuilder::class, $builder);
     }
+
+    public function testNotificationBuilderWithDelay(): void
+    {
+        $notifiable = new MockNotifiable(['id' => 1]);
+
+        $builder = Notification::to($notifiable)->after(300);
+
+        $reflection = new \ReflectionClass($builder);
+        $property = $reflection->getProperty('delay');
+        $property->setAccessible(true);
+
+        $this->assertEquals(300, $property->getValue($builder));
+    }
 }
