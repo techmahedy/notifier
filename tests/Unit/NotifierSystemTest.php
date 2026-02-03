@@ -17,6 +17,7 @@ use Doppar\Notifier\Tests\Mock\Models\MockNotifiable;
 use Doppar\Notifier\Tests\Mock\Notifications\TestEmailNotification;
 use Doppar\Notifier\Supports\Facades\Notification;
 use Doppar\Notifier\Concerns\NotificationBuilder;
+use Doppar\Notifier\Concerns\BulkNotificationBuilder;
 
 class NotifierSystemTest extends TestCase
 {
@@ -283,5 +284,18 @@ class NotifierSystemTest extends TestCase
         $property->setAccessible(true);
 
         $this->assertEquals(300, $property->getValue($builder));
+    }
+
+    public function testBulkNotificationBuilder(): void
+    {
+        $notifiables = [
+            new MockNotifiable(['id' => 1]),
+            new MockNotifiable(['id' => 2]),
+            new MockNotifiable(['id' => 3]),
+        ];
+
+        $builder = Notification::toMany($notifiables);
+
+        $this->assertInstanceOf(BulkNotificationBuilder::class, $builder);
     }
 }
