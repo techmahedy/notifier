@@ -121,7 +121,7 @@ class NotifierSystemTest extends TestCase
     // TEST NOTIFICATION MANAGER
     // =====================================================
 
-     public function testInvalidChannelThrowsException(): void
+    public function testInvalidChannelThrowsException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Notification channel [invalid] is not supported.');
@@ -209,6 +209,27 @@ class NotifierSystemTest extends TestCase
         $this->assertNotNull($notification->read_at);
         $this->assertTrue($notification->isRead());
         $this->assertFalse($notification->isUnread());
+    }
+
+    public function testMarkNotificationAsUnread(): void
+    {
+        $notification = DatabaseNotification::create([
+            'notifiable_type' => MockNotifiable::class,
+            'notifiable_id' => 1,
+            'type' => TestEmailNotification::class,
+            'data' => json_encode(['message' => 'Test']),
+            'metadata' => json_encode([]),
+            'read_at' => date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $this->assertTrue($notification->isRead());
+
+        $result = $notification->markAsUnread();
+
+        $this->assertTrue($result);
+        $this->assertNull($notification->read_at);
+        $this->assertTrue($notification->isUnread());
     }
 
     public function testNotificationBuilderCreation(): void
