@@ -298,4 +298,20 @@ class NotifierSystemTest extends TestCase
 
         $this->assertInstanceOf(BulkNotificationBuilder::class, $builder);
     }
+
+    public function testBulkNotificationWithBatchSize(): void
+    {
+        $notifiables = array_map(
+            fn($i) => new MockNotifiable(['id' => $i]),
+            range(1, 250)
+        );
+
+        $builder = Notification::toMany($notifiables)->batchSize(100);
+
+        $reflection = new \ReflectionClass($builder);
+        $property = $reflection->getProperty('batchSize');
+        $property->setAccessible(true);
+
+        $this->assertEquals(100, $property->getValue($builder));
+    }
 }
