@@ -32,9 +32,6 @@
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "1.x-dev"
-        },
         "doppar": {
             "providers": [
                 "Doppar\\Notifier\\NotifierServiceProvider"
@@ -47,5 +44,6 @@
     "minimum-stability": "dev",
     "require": {
         "doppar/queue": "1.*"
-    }
+    },
+    "prefer-stable": true
 }
